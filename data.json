@@ -1,14 +1,1 @@
-{
-  "cards": {
-    "Foundation": [
-      {"question": "Q1: Question facile", "answer": "R1: Réponse simple"}
-    ],
-    "Standard": [...],
-    "Advanced": [...]
-  },
-  "students": {
-    "Alice": {"level": "Foundation", "progress": [1, 0, 1]},
-    "Bob": {"level": "Standard", "progress": [1, 1, 1]},
-    ...
-  }
-}
+{"cards": {"Foundation": [{"question": "Qu'est-ce que Les fractions sont des nombres qui repr\u00e9sentent de...?", "answer": "C'est un concept de base important."}, {"question": "Pouvez-vous donner un exemple simple?", "answer": "Oui, par exemple..."}, {"question": "Pourquoi est-ce important?", "answer": "C'est important car..."}, {"question": "Comment l'utiliser?", "answer": "On l'utilise en..."}, {"question": "O\u00f9 trouve-t-on cela?", "answer": "On le trouve dans..."}], "Standard": [{"question": "Expliquez le concept de Les fractions sont des nombres qui repr\u00e9sentent de...", "answer": "Ce concept signifie que..."}, {"question": "Quelles sont les applications pratiques?", "answer": "Les applications incluent..."}, {"question": "Comment cela fonctionne-t-il?", "answer": "Le fonctionnement est bas\u00e9 sur..."}, {"question": "Quels sont les avantages?", "answer": "Les avantages principaux sont..."}, {"question": "Quelles sont les limites?", "answer": "Les limites incluent..."}], "Advanced": [{"question": "Analysez en profondeur Les fractions sont des nombres qui repr\u00e9sentent de...", "answer": "Une analyse approfondie r\u00e9v\u00e8le que..."}, {"question": "Quelles sont les implications th\u00e9oriques?", "answer": "Les implications th\u00e9oriques sont..."}, {"question": "Comment r\u00e9soudre des probl\u00e8mes complexes?", "answer": "Pour r\u00e9soudre des probl\u00e8mes complexes..."}, {"question": "Quelles sont les recherches r\u00e9centes?", "answer": "Les recherches r\u00e9centes montrent..."}, {"question": "Comment innover dans ce domaine?", "answer": "L'innovation peut se faire par..."}]}, "students": {"Alice": {"level": "Foundation", "progress": [1]}, "Bob": {"level": "Standard", "progress": []}, "Charlie": {"level": "Advanced", "progress": []}, "Diana": {"level": "Foundation", "progress": []}, "Eve": {"level": "Standard", "progress": []}}}
