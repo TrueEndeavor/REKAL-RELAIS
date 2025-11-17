@@ -69,6 +69,7 @@ nav {
 h2 {
     color: #667eea;
     margin-bottom: 15px;
+    margin-top: 25px;
     font-size: 1.8em;
 }
 
@@ -117,6 +118,12 @@ textarea:focus {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+.primary-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: none;
+}
+
 .secondary-btn {
     padding: 12px 24px;
     background: #6c757d;
@@ -140,37 +147,61 @@ textarea:focus {
     padding: 20px;
 }
 
-#cards-display {
-    margin-top: 30px;
-}
-
-#cards-display h2 {
-    color: #764ba2;
-    margin-top: 25px;
-    margin-bottom: 15px;
-    padding-bottom: 10px;
-    border-bottom: 2px solid #e0e0e0;
-}
-
-.card {
+/* Teacher View - Card Preview */
+.preview-card {
+    background: #f8f9fa;
     border: 2px solid #e0e0e0;
     padding: 20px;
     margin: 15px 0;
     border-radius: 10px;
-    background: #f8f9fa;
-    transition: all 0.3s ease;
 }
 
-.card:hover {
-    border-color: #667eea;
-    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
+.card-number {
+    background: #667eea;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+    display: inline-block;
+    font-size: 0.9em;
+    font-weight: 600;
+    margin-bottom: 15px;
 }
 
-.card strong {
-    color: #667eea;
+.question-text {
     font-size: 1.1em;
+    color: #333;
+    margin-bottom: 15px;
 }
 
+.options-preview {
+    margin: 15px 0;
+}
+
+.option-preview {
+    padding: 10px 15px;
+    margin: 8px 0;
+    background: white;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 0.95em;
+}
+
+.correct-preview {
+    border-color: #28a745;
+    background: #d4edda;
+    font-weight: 600;
+}
+
+.explanation {
+    color: #666;
+    font-size: 0.95em;
+    margin-top: 15px;
+    padding: 10px;
+    background: #fff3cd;
+    border-radius: 5px;
+}
+
+/* Student View - Flashcard */
 select {
     width: 100%;
     padding: 15px;
@@ -205,46 +236,190 @@ select:focus {
     margin-left: 10px;
 }
 
-#cards-container .card {
+.flashcard {
     background: white;
-    border: 2px solid #667eea;
+    border: 3px solid #667eea;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-#cards-container .card p {
-    font-size: 1.1em;
-    margin-bottom: 15px;
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.card-counter {
+    background: #667eea;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9em;
+}
+
+.student-name {
+    color: #666;
+    font-weight: 600;
+}
+
+.question-section {
+    margin-bottom: 25px;
+}
+
+.question-section h3 {
     color: #333;
+    font-size: 1.3em;
+    line-height: 1.5;
 }
 
-#cards-container .card input {
-    width: 100%;
-    padding: 12px;
+.options-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.option-btn {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 20px;
+    background: white;
     border: 2px solid #e0e0e0;
-    border-radius: 8px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: left;
     font-size: 1em;
-    margin-bottom: 10px;
 }
 
-#cards-container .card input:focus {
-    outline: none;
+.option-btn:hover:not(:disabled) {
     border-color: #667eea;
+    background: #f0f4ff;
+    transform: translateX(5px);
 }
 
-.submit-answer {
-    padding: 10px 20px;
+.option-btn:disabled {
+    cursor: not-allowed;
+}
+
+.option-letter {
+    background: #667eea;
+    color: white;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.option-text {
+    flex: 1;
+}
+
+.option-btn.correct {
+    border-color: #28a745;
+    background: #d4edda;
+}
+
+.option-btn.correct .option-letter {
     background: #28a745;
+}
+
+.option-btn.incorrect {
+    border-color: #dc3545;
+    background: #f8d7da;
+}
+
+.option-btn.incorrect .option-letter {
+    background: #dc3545;
+}
+
+.feedback-section {
+    margin-top: 20px;
+}
+
+.feedback {
+    display: flex;
+    gap: 15px;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.correct-feedback {
+    background: #d4edda;
+    border: 2px solid #28a745;
+}
+
+.incorrect-feedback {
+    background: #f8d7da;
+    border: 2px solid #dc3545;
+}
+
+.feedback-icon {
+    font-size: 2em;
+}
+
+.feedback-text {
+    flex: 1;
+}
+
+.feedback-text strong {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 1.1em;
+}
+
+.feedback-text p {
+    color: #666;
+    line-height: 1.5;
+}
+
+.next-btn {
+    width: 100%;
+    padding: 15px;
+    background: #667eea;
     color: white;
     border: none;
     border-radius: 8px;
+    font-size: 1.1em;
+    font-weight: 600;
     cursor: pointer;
-    font-size: 1em;
     transition: all 0.3s ease;
 }
 
-.submit-answer:hover {
-    background: #218838;
+.next-btn:hover {
+    background: #764ba2;
+    transform: translateY(-2px);
 }
 
+.completion-message {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.completion-message h3 {
+    color: #667eea;
+    font-size: 2em;
+    margin-bottom: 15px;
+}
+
+.completion-message p {
+    color: #666;
+    font-size: 1.2em;
+    margin-bottom: 25px;
+}
+
+/* Dashboard */
 .legend {
     display: flex;
     justify-content: center;
@@ -276,24 +451,42 @@ select:focus {
 .red { background: #dc3545; }
 .gray { background: #6c757d; }
 
-#dashboard {
+.dashboard-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 15px;
     margin-top: 20px;
 }
 
-#dashboard p {
+.student-card {
     background: #f8f9fa;
-    padding: 15px;
-    border-radius: 8px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    padding: 20px;
+    border-radius: 10px;
+    border: 2px solid #e0e0e0;
+    transition: all 0.3s ease;
+}
+
+.student-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.student-name-dash {
     font-size: 1.1em;
     font-weight: 600;
     color: #333;
-    border: 2px solid #e0e0e0;
+    margin-bottom: 10px;
+}
+
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.status-text {
+    color: #666;
+    font-size: 0.9em;
 }
 
 footer {
@@ -320,5 +513,13 @@ footer {
     
     h2 {
         font-size: 1.5em;
+    }
+    
+    .flashcard {
+        padding: 15px;
+    }
+    
+    .option-btn {
+        padding: 12px 15px;
     }
 }

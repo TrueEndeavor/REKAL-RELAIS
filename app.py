@@ -172,31 +172,107 @@ def parse_generated_cards(text):
     return cards
 
 def generate_fallback_cards(lesson_text):
-    """Generate sample cards based on lesson text for demo purposes"""
-    # Extract first few words for context
-    context = lesson_text[:50] + "..." if len(lesson_text) > 50 else lesson_text
+    """Generate MCQ flashcards based on lesson text for quick assessment"""
+    # Extract key concept from lesson text
+    words = lesson_text.split()
+    key_concept = ' '.join(words[:5]) if len(words) >= 5 else lesson_text
     
     return {
         'Foundation': [
-            {'question': f'Qu\'est-ce que {context}?', 'answer': 'C\'est un concept de base important.'},
-            {'question': 'Pouvez-vous donner un exemple simple?', 'answer': 'Oui, par exemple...'},
-            {'question': 'Pourquoi est-ce important?', 'answer': 'C\'est important car...'},
-            {'question': 'Comment l\'utiliser?', 'answer': 'On l\'utilise en...'},
-            {'question': 'Où trouve-t-on cela?', 'answer': 'On le trouve dans...'}
+            {
+                'question': f'Qu\'est-ce qu\'une fraction?',
+                'options': ['Un nombre entier', 'Une partie d\'un tout', 'Un nombre négatif', 'Un pourcentage'],
+                'correct': 1,
+                'explanation': 'Une fraction représente une partie d\'un tout.'
+            },
+            {
+                'question': 'Dans la fraction 3/4, quel est le numérateur?',
+                'options': ['4', '3', '7', '1'],
+                'correct': 1,
+                'explanation': 'Le numérateur est le nombre du haut, donc 3.'
+            },
+            {
+                'question': 'Que représente le dénominateur?',
+                'options': ['Le nombre de parties prises', 'Le nombre total de parties', 'La somme', 'La différence'],
+                'correct': 1,
+                'explanation': 'Le dénominateur indique en combien de parties le tout est divisé.'
+            },
+            {
+                'question': 'Quelle fraction représente "la moitié"?',
+                'options': ['1/4', '1/2', '2/1', '1/3'],
+                'correct': 1,
+                'explanation': '1/2 signifie 1 partie sur 2, donc la moitié.'
+            },
+            {
+                'question': 'Comment lit-on 1/4?',
+                'options': ['Un quart', 'Un demi', 'Un tiers', 'Un cinquième'],
+                'correct': 0,
+                'explanation': '1/4 se lit "un quart".'
+            }
         ],
         'Standard': [
-            {'question': f'Expliquez le concept de {context}', 'answer': 'Ce concept signifie que...'},
-            {'question': 'Quelles sont les applications pratiques?', 'answer': 'Les applications incluent...'},
-            {'question': 'Comment cela fonctionne-t-il?', 'answer': 'Le fonctionnement est basé sur...'},
-            {'question': 'Quels sont les avantages?', 'answer': 'Les avantages principaux sont...'},
-            {'question': 'Quelles sont les limites?', 'answer': 'Les limites incluent...'}
+            {
+                'question': 'Quelle est la fraction équivalente à 2/4?',
+                'options': ['1/2', '2/8', '4/2', '1/4'],
+                'correct': 0,
+                'explanation': '2/4 = 1/2 car on peut simplifier en divisant par 2.'
+            },
+            {
+                'question': 'Comment additionner 1/4 + 1/4?',
+                'options': ['2/8', '1/2', '2/4', '1/8'],
+                'correct': 1,
+                'explanation': '1/4 + 1/4 = 2/4 = 1/2 (simplifié).'
+            },
+            {
+                'question': 'Quelle fraction est la plus grande: 1/3 ou 1/4?',
+                'options': ['1/4', '1/3', 'Égales', 'Impossible à dire'],
+                'correct': 1,
+                'explanation': '1/3 est plus grand car le dénominateur est plus petit.'
+            },
+            {
+                'question': 'Comment simplifier 4/8?',
+                'options': ['2/4', '1/2', '8/16', 'Les deux: 2/4 et 1/2'],
+                'correct': 3,
+                'explanation': '4/8 = 2/4 = 1/2 en divisant par 2 puis encore par 2.'
+            },
+            {
+                'question': 'Que signifie "fraction irréductible"?',
+                'options': ['Fraction très petite', 'Fraction qu\'on ne peut plus simplifier', 'Fraction négative', 'Fraction décimale'],
+                'correct': 1,
+                'explanation': 'Une fraction irréductible ne peut plus être simplifiée.'
+            }
         ],
         'Advanced': [
-            {'question': f'Analysez en profondeur {context}', 'answer': 'Une analyse approfondie révèle que...'},
-            {'question': 'Quelles sont les implications théoriques?', 'answer': 'Les implications théoriques sont...'},
-            {'question': 'Comment résoudre des problèmes complexes?', 'answer': 'Pour résoudre des problèmes complexes...'},
-            {'question': 'Quelles sont les recherches récentes?', 'answer': 'Les recherches récentes montrent...'},
-            {'question': 'Comment innover dans ce domaine?', 'answer': 'L\'innovation peut se faire par...'}
+            {
+                'question': 'Comment multiplier 2/3 × 3/4?',
+                'options': ['6/12 = 1/2', '5/7', '2/4', '6/7'],
+                'correct': 0,
+                'explanation': 'On multiplie les numérateurs (2×3=6) et les dénominateurs (3×4=12), puis on simplifie: 6/12 = 1/2.'
+            },
+            {
+                'question': 'Comment diviser 1/2 ÷ 1/4?',
+                'options': ['1/8', '2', '1/6', '4'],
+                'correct': 1,
+                'explanation': 'Diviser par une fraction = multiplier par son inverse: 1/2 × 4/1 = 4/2 = 2.'
+            },
+            {
+                'question': 'Quelle est la fraction décimale de 3/4?',
+                'options': ['0.25', '0.5', '0.75', '0.34'],
+                'correct': 2,
+                'explanation': '3÷4 = 0.75'
+            },
+            {
+                'question': 'Comment additionner 1/3 + 1/4?',
+                'options': ['2/7', '7/12', '5/12', '4/12'],
+                'correct': 1,
+                'explanation': 'On trouve le dénominateur commun (12): 4/12 + 3/12 = 7/12.'
+            },
+            {
+                'question': 'Quelle fraction est équivalente à 150%?',
+                'options': ['1/2', '3/2', '2/3', '15/10'],
+                'correct': 1,
+                'explanation': '150% = 150/100 = 3/2 (simplifié).'
+            }
         ]
     }
 
