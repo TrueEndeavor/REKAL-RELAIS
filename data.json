@@ -1,0 +1,14 @@
+{
+  "cards": {
+    "Foundation": [
+      {"question": "Q1: Question facile", "answer": "R1: Réponse simple"}
+    ],
+    "Standard": [...],
+    "Advanced": [...]
+  },
+  "students": {
+    "Alice": {"level": "Foundation", "progress": [1, 0, 1]},
+    "Bob": {"level": "Standard", "progress": [1, 1, 1]},
+    ...
+  }
+}
