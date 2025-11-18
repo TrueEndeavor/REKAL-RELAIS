@@ -1,0 +1,43 @@
+TO: contact@hackthegap.xyz
+SUBJECT: Hack the Gap Submission - REKAL Relais
+
+---
+
+Team Name: [YOUR TEAM NAME HERE]
+Team Members: [YOUR NAMES HERE]
+
+---
+
+LINKS:
+
+🌐 Product URL: [PASTE YOUR RENDER URL HERE after deployment]
+📹 Demo Video: [PASTE YOUR VIDEO LINK HERE after recording]
+💻 GitHub Repository: https://github.com/TrueEndeavor/REKAL-RELAIS
+📄 Documentation: See attached SUBMISSION.md
+
+---
+
+PRODUCT DESCRIPTION:
+
+REKAL Relais is a live micro-learning platform that enables real-time classroom differentiation for French secondary education.
+
+The Challenge: Teachers must teach 30+ students at vastly different knowledge levels (some 2 years ahead, others 2 years behind) with no real-time visibility into who understands and who is lost.
+
+Our Solution: Instant micro-assessments with live teacher analytics. Students answer quick MCQ questions on their devices while the teacher sees real-time class-wide accuracy, individual progress, and performance indicators - enabling immediate intervention.
+
+Key Innovation: Japanese-style "kikan-shido" (live classroom monitoring) powered by technology - seeing understanding as it happens, not weeks later on tests.
+
+Impact: Zero prep time (5 pre-loaded topics), instant deployment, works in any 55-minute class period with existing devices.
+
+Built in 48 hours. Deployed and ready for classroom testing.
+
+---
+
+ATTACHMENTS:
+- SUBMISSION.md (detailed metrics and product documentation)
+
+---
+
+Best regards,
+[YOUR NAME]
+[YOUR CONTACT INFO - optional]
