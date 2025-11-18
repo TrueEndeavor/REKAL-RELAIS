@@ -1,8 +1,14 @@
-# 🎓 REKAL Relais - Autopilot pour Classes Mixtes
+# REKAL Relais 🎓
 
-**Hackathon Project 2024**
+**Live Micro-Learning Platform for Classroom Differentiation**
 
-REKAL Relais is a lightweight, web-based micro-learning tool that helps teachers manage 30 students at 30 different levels with zero extra workload.
+Built for [Hack the Gap](https://hackthegap.xyz) - Addressing the French Education Challenge: Teaching 30 Students at 30 Different Levels
+
+---
+
+## 🚀 Live Demo
+
+**Deployed URL:** [Add your Render URL after deployment]
 
 ---
 
