@@ -1,0 +1,182 @@
+{
+  "photosynthesis": {
+    "title": "Photosynthesis",
+    "icon": "🌱",
+    "questions": [
+      {
+        "question": "What do plants need for photosynthesis?",
+        "options": ["Water and carbon dioxide", "Oxygen and nitrogen", "Sugar and salt", "Protein and vitamins"],
+        "correct": 0,
+        "explanation": "Plants use water and carbon dioxide, along with sunlight, to produce glucose and oxygen."
+      },
+      {
+        "question": "Where does photosynthesis occur in a plant?",
+        "options": ["Roots", "Stem", "Leaves", "Flowers"],
+        "correct": 2,
+        "explanation": "Photosynthesis occurs in the chloroplasts found in leaf cells."
+      },
+      {
+        "question": "What is the green pigment in plants called?",
+        "options": ["Hemoglobin", "Chlorophyll", "Carotene", "Melanin"],
+        "correct": 1,
+        "explanation": "Chlorophyll is the green pigment that captures light energy for photosynthesis."
+      },
+      {
+        "question": "What gas do plants release during photosynthesis?",
+        "options": ["Carbon dioxide", "Nitrogen", "Oxygen", "Hydrogen"],
+        "correct": 2,
+        "explanation": "Plants release oxygen as a byproduct of photosynthesis."
+      },
+      {
+        "question": "What energy source powers photosynthesis?",
+        "options": ["Wind", "Sunlight", "Heat from soil", "Electricity"],
+        "correct": 1,
+        "explanation": "Sunlight provides the energy needed to convert CO₂ and water into glucose."
+      }
+    ]
+  },
+  "french_revolution": {
+    "title": "French Revolution",
+    "icon": "⚔️",
+    "questions": [
+      {
+        "question": "When did the French Revolution begin?",
+        "options": ["1789", "1776", "1800", "1815"],
+        "correct": 0,
+        "explanation": "The French Revolution began in 1789 with the storming of the Bastille."
+      },
+      {
+        "question": "What was the Bastille?",
+        "options": ["A palace", "A prison", "A church", "A market"],
+        "correct": 1,
+        "explanation": "The Bastille was a fortress and political prison in Paris, stormed on July 14, 1789."
+      },
+      {
+        "question": "What did 'Liberté, Égalité, Fraternité' mean?",
+        "options": ["Love, Peace, Joy", "Liberty, Equality, Fraternity", "Faith, Hope, Charity", "King, Country, God"],
+        "correct": 1,
+        "explanation": "This became the motto of the French Revolution, advocating freedom, equal rights, and brotherhood."
+      },
+      {
+        "question": "Who was the King of France during the Revolution?",
+        "options": ["Louis XIV", "Napoleon", "Louis XVI", "Henry IV"],
+        "correct": 2,
+        "explanation": "King Louis XVI was executed during the Revolution in 1793."
+      },
+      {
+        "question": "What was the guillotine used for?",
+        "options": ["Farming", "Executions", "Building", "Cooking"],
+        "correct": 1,
+        "explanation": "The guillotine was an execution device widely used during the Revolution's Reign of Terror."
+      }
+    ]
+  },
+  "fractions": {
+    "title": "Fractions",
+    "icon": "🔢",
+    "questions": [
+      {
+        "question": "What is a fraction?",
+        "options": ["A whole number", "Part of a whole", "A negative number", "A percentage"],
+        "correct": 1,
+        "explanation": "A fraction represents a part of a whole, like 1/2 or 3/4."
+      },
+      {
+        "question": "In the fraction 3/4, what is the numerator?",
+        "options": ["4", "3", "7", "1"],
+        "correct": 1,
+        "explanation": "The numerator is the top number, which is 3."
+      },
+      {
+        "question": "What does the denominator represent?",
+        "options": ["Parts taken", "Total parts", "The sum", "The difference"],
+        "correct": 1,
+        "explanation": "The denominator shows how many equal parts the whole is divided into."
+      },
+      {
+        "question": "Which fraction equals one half?",
+        "options": ["1/4", "1/2", "2/1", "1/3"],
+        "correct": 1,
+        "explanation": "1/2 means 1 part out of 2 equal parts."
+      },
+      {
+        "question": "What is 1/4 + 1/4?",
+        "options": ["2/8", "1/2", "2/4", "Both B and C"],
+        "correct": 3,
+        "explanation": "1/4 + 1/4 = 2/4, which simplifies to 1/2."
+      }
+    ]
+  },
+  "solar_system": {
+    "title": "Solar System",
+    "icon": "🪐",
+    "questions": [
+      {
+        "question": "Which planet is closest to the Sun?",
+        "options": ["Venus", "Earth", "Mercury", "Mars"],
+        "correct": 2,
+        "explanation": "Mercury is the closest planet to the Sun."
+      },
+      {
+        "question": "How many planets are in our solar system?",
+        "options": ["7", "8", "9", "10"],
+        "correct": 1,
+        "explanation": "There are 8 planets since Pluto was reclassified as a dwarf planet in 2006."
+      },
+      {
+        "question": "Which is the largest planet?",
+        "options": ["Saturn", "Neptune", "Jupiter", "Earth"],
+        "correct": 2,
+        "explanation": "Jupiter is the largest planet in our solar system."
+      },
+      {
+        "question": "What is the Earth's natural satellite?",
+        "options": ["The Sun", "Mars", "The Moon", "Venus"],
+        "correct": 2,
+        "explanation": "The Moon is Earth's only natural satellite."
+      },
+      {
+        "question": "Which planet is known as the Red Planet?",
+        "options": ["Mars", "Venus", "Mercury", "Jupiter"],
+        "correct": 0,
+        "explanation": "Mars appears red due to iron oxide (rust) on its surface."
+      }
+    ]
+  },
+  "water_cycle": {
+    "title": "Water Cycle",
+    "icon": "💧",
+    "questions": [
+      {
+        "question": "What is evaporation?",
+        "options": ["Water freezing", "Water turning to vapor", "Water falling as rain", "Water in plants"],
+        "correct": 1,
+        "explanation": "Evaporation is when liquid water turns into water vapor due to heat."
+      },
+      {
+        "question": "What is precipitation?",
+        "options": ["Water evaporating", "Water condensing", "Water falling to Earth", "Water in oceans"],
+        "correct": 2,
+        "explanation": "Precipitation is water falling from clouds as rain, snow, sleet, or hail."
+      },
+      {
+        "question": "Where does most evaporation occur?",
+        "options": ["Mountains", "Forests", "Oceans", "Rivers"],
+        "correct": 2,
+        "explanation": "Most evaporation occurs from oceans, which cover about 71% of Earth's surface."
+      },
+      {
+        "question": "What are clouds made of?",
+        "options": ["Cotton", "Smoke", "Water droplets", "Air"],
+        "correct": 2,
+        "explanation": "Clouds are made of tiny water droplets or ice crystals."
+      },
+      {
+        "question": "What drives the water cycle?",
+        "options": ["Wind", "The Sun", "Gravity", "The Moon"],
+        "correct": 1,
+        "explanation": "The Sun's energy drives evaporation, which powers the water cycle."
+      }
+    ]
+  }
+}

@@ -1,253 +1,290 @@
-const API_BASE = 'http://localhost:5000';
+const API_BASE = window.location.origin;
 
-let currentStudent = '';
-let currentCards = [];
-let currentCardIndex = 0;
+let topics = {};
+let currentTopic = null;
+let sessionActive = false;
+const students = ['Alice', 'Bob', 'Charlie', 'Diana', 'Eve'];
+let studentStates = {};
 
-// View switching function
-function showView(viewName) {
-    document.getElementById('teacher-view').style.display = 'none';
-    document.getElementById('student-view').style.display = 'none';
-    document.getElementById('dashboard-view').style.display = 'none';
-    document.getElementById(`${viewName}-view`).style.display = 'block';
-    
-    if (viewName === 'dashboard') {
-        loadDashboard();
+// Initialize
+document.addEventListener('DOMContentLoaded', async () => {
+    await loadTopics();
+    initializeStudentStates();
+});
+
+async function loadTopics() {
+    try {
+        const response = await fetch('/topics.json');
+        topics = await response.json();
+
+        const select = document.getElementById('topic-select');
+        for (const [key, value] of Object.entries(topics)) {
+            const option = document.createElement('option');
+            option.value = key;
+            option.textContent = `${value.icon} ${value.title}`;
+            select.appendChild(option);
+        }
+
+        select.addEventListener('change', (e) => {
+            document.getElementById('start-session-btn').disabled = !e.target.value;
+        });
+    } catch (error) {
+        console.error('Error loading topics:', error);
     }
 }
 
-// Teacher view - Generate MCQ cards
-document.getElementById('generate-btn').addEventListener('click', async () => {
-    const text = document.getElementById('lesson-text').value.trim();
-    
-    if (!text) {
-        alert('Veuillez entrer le texte de votre leçon.');
-        return;
-    }
-    
-    document.getElementById('loading').style.display = 'block';
-    document.getElementById('cards-display').innerHTML = '';
-    document.getElementById('generate-btn').disabled = true;
-    
-    try {
-        const response = await fetch(`${API_BASE}/generate`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ text })
-        });
-        
-        if (!response.ok) throw new Error('Erreur génération');
-        
-        const cards = await response.json();
-        
-        let html = '';
-        const levelNames = {
-            'Foundation': '📗 Fondation (Débutants)',
-            'Standard': '📘 Standard (Intermédiaire)',
-            'Advanced': '📕 Avancé (Experts)'
+function initializeStudentStates() {
+    students.forEach(student => {
+        studentStates[student] = {
+            currentQuestion: 0,
+            score: 0,
+            answers: [],
+            active: false,
+            startTime: null,
+            totalTime: 0
         };
-        
-        for (const level in cards) {
-            if (cards[level].length > 0) {
-                html += `<h2>${levelNames[level] || level}</h2>`;
-                cards[level].forEach((card, idx) => {
-                    html += `
-                        <div class="card preview-card">
-                            <div class="card-number">Question ${idx + 1}</div>
-                            <p class="question-text"><strong>${card.question}</strong></p>
-                            <div class="options-preview">
-                                ${card.options.map((opt, i) => `
-                                    <div class="option-preview ${i === card.correct ? 'correct-preview' : ''}">
-                                        ${String.fromCharCode(65 + i)}. ${opt}
-                                        ${i === card.correct ? ' ✓' : ''}
-                                    </div>
-                                `).join('')}
-                            </div>
-                            <p class="explanation"><em>💡 ${card.explanation}</em></p>
-                        </div>
-                    `;
-                });
-            }
-        }
-        
-        document.getElementById('cards-display').innerHTML = html;
-        alert('✅ Cartes MCQ générées! Les élèves peuvent maintenant pratiquer.');
-        
-    } catch (error) {
-        console.error('Error:', error);
-        alert('❌ Erreur lors de la génération.');
-    } finally {
-        document.getElementById('loading').style.display = 'none';
-        document.getElementById('generate-btn').disabled = false;
-    }
+    });
+}
+
+// Start Session
+document.getElementById('start-session-btn').addEventListener('click', () => {
+    const topicKey = document.getElementById('topic-select').value;
+    if (!topicKey) return;
+
+    currentTopic = topics[topicKey];
+    sessionActive = true;
+
+    // Reset all students
+    initializeStudentStates();
+
+    // Update teacher dashboard
+    updateTeacherDashboard();
+
+    // Start all students
+    students.forEach(student => {
+        studentStates[student].active = true;
+        studentStates[student].startTime = Date.now();
+        showQuestionForStudent(student);
+    });
+
+    document.getElementById('start-session-btn').textContent = 'Session Active';
+    document.getElementById('start-session-btn').disabled = true;
 });
 
-// Student view - Select student and start flashcards
-document.getElementById('student-select').addEventListener('change', async (e) => {
-    currentStudent = e.target.value;
-    if (!currentStudent) {
-        document.getElementById('student-info').style.display = 'none';
-        document.getElementById('cards-container').innerHTML = '';
+function updateTeacherDashboard() {
+    const grid = document.getElementById('teacher-grid');
+
+    if (!sessionActive) {
+        grid.innerHTML = '<div class="no-session">Select a topic and start a session to see live student progress</div>';
         return;
     }
-    
-    try {
-        const response = await fetch(`${API_BASE}/student/${currentStudent}`);
-        if (!response.ok) throw new Error('Erreur chargement');
-        
-        const data = await response.json();
-        if (data.error) {
-            alert(data.error);
-            return;
-        }
-        
-        currentCards = data.cards;
-        currentCardIndex = 0;
-        
-        if (currentCards.length === 0) {
-            document.getElementById('cards-container').innerHTML = 
-                '<p style="text-align:center; color:#666;">Aucune carte disponible. Le professeur doit générer des cartes.</p>';
-            return;
-        }
-        
-        document.getElementById('student-info').style.display = 'block';
-        document.getElementById('current-level').textContent = 'En cours...';
-        
-        showFlashcard();
-        
-    } catch (error) {
-        console.error('Error:', error);
-        alert('❌ Erreur. Assurez-vous que des cartes ont été générées.');
-    }
-});
 
-function showFlashcard() {
-    if (currentCardIndex >= currentCards.length) {
-        document.getElementById('cards-container').innerHTML = `
-            <div class="completion-message">
-                <h3>🎉 Bravo ${currentStudent}!</h3>
-                <p>Vous avez terminé toutes les cartes!</p>
-                <button class="primary-btn" onclick="location.reload()">Recommencer</button>
+    // Calculate class statistics
+    const totalAnswers = students.reduce((sum, s) => sum + studentStates[s].answers.length, 0);
+    const totalCorrect = students.reduce((sum, s) => sum + studentStates[s].score, 0);
+    const classAccuracy = totalAnswers > 0 ? Math.round((totalCorrect / totalAnswers) * 100) : 0;
+    const activeCount = students.filter(s => studentStates[s].currentQuestion < currentTopic.questions.length).length;
+    const completedCount = students.length - activeCount;
+
+    let html = `
+        <div class="class-stats">
+            <div class="stat-card">
+                <div class="stat-icon">🎯</div>
+                <div class="stat-info">
+                    <div class="stat-label">Class Accuracy</div>
+                    <div class="stat-value">${classAccuracy}%</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📊</div>
+                <div class="stat-info">
+                    <div class="stat-label">Active Students</div>
+                    <div class="stat-value">${activeCount}/${students.length}</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">✅</div>
+                <div class="stat-info">
+                    <div class="stat-label">Completed</div>
+                    <div class="stat-value">${completedCount}</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">⚡</div>
+                <div class="stat-info">
+                    <div class="stat-label">Total Answers</div>
+                    <div class="stat-value">${totalAnswers}</div>
+                </div>
+            </div>
+        </div>
+        <div class="progress-table">
+    `;
+
+    html += '<div class="progress-header">';
+    html += '<div class="header-cell">Student</div>';
+    html += '<div class="header-cell">Progress</div>';
+    html += '<div class="header-cell">Score</div>';
+    html += '<div class="header-cell">Status</div>';
+    html += '</div>';
+
+    students.forEach(student => {
+        const state = studentStates[student];
+        const progress = (state.currentQuestion / currentTopic.questions.length) * 100;
+        const scorePercent = state.answers.length > 0
+            ? Math.round((state.score / state.answers.length) * 100)
+            : 0;
+
+        let statusClass = 'status-waiting';
+        let statusIcon = '⏸️';
+        let statusText = 'Waiting';
+
+        if (state.currentQuestion >= currentTopic.questions.length) {
+            statusClass = 'status-complete';
+            statusIcon = '✅';
+            statusText = 'Complete';
+        } else if (state.active) {
+            statusClass = 'status-active';
+            statusIcon = '📝';
+            statusText = `Q${state.currentQuestion + 1}`;
+        }
+
+        // Performance indicator
+        let perfIndicator = '';
+        if (state.answers.length > 0) {
+            if (scorePercent >= 80) perfIndicator = '🔥';
+            else if (scorePercent >= 60) perfIndicator = '👍';
+            else perfIndicator = '💪';
+        }
+
+        html += `
+            <div class="progress-row ${statusClass}">
+                <div class="cell student-cell">${student} ${perfIndicator}</div>
+                <div class="cell">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${progress}%"></div>
+                    </div>
+                    <span class="progress-text">${state.currentQuestion}/${currentTopic.questions.length}</span>
+                </div>
+                <div class="cell score-cell">
+                    <span class="score-badge ${scorePercent >= 70 ? 'good' : scorePercent >= 50 ? 'medium' : 'low'}">
+                        ${state.score}/${state.answers.length}
+                    </span>
+                    ${state.answers.length > 0 ? `<span class="percent">${scorePercent}%</span>` : ''}
+                </div>
+                <div class="cell status-cell">
+                    <span class="status-badge ${statusClass}">${statusIcon} ${statusText}</span>
+                </div>
             </div>
         `;
+    });
+
+    html += '</div>';
+    grid.innerHTML = html;
+}
+
+function showQuestionForStudent(studentName) {
+    const state = studentStates[studentName];
+    const panel = document.querySelector(`.student-panel[data-student="${studentName}"]`);
+    const content = panel.querySelector('.student-content');
+    const statusEl = panel.querySelector('.student-status');
+
+    if (state.currentQuestion >= currentTopic.questions.length) {
+        // Completed
+        const scorePercent = Math.round((state.score / state.answers.length) * 100);
+        const totalTime = Math.round((Date.now() - state.startTime) / 1000);
+        content.innerHTML = `
+            <div class="completion">
+                <div class="completion-icon">${scorePercent >= 80 ? '🎉' : scorePercent >= 60 ? '👍' : '💪'}</div>
+                <div class="completion-text">
+                    <h3>Complete!</h3>
+                    <p class="score-display">${state.score}/${state.answers.length}</p>
+                    <p class="percent-display">${scorePercent}%</p>
+                    <p class="time-display">⏱️ ${totalTime}s</p>
+                </div>
+            </div>
+        `;
+        statusEl.textContent = 'Finished';
+        statusEl.className = 'student-status status-complete';
+        updateTeacherDashboard();
         return;
     }
-    
-    const card = currentCards[currentCardIndex];
-    const html = `
-        <div class="flashcard">
-            <div class="card-header">
-                <span class="card-counter">Carte ${currentCardIndex + 1}/${currentCards.length}</span>
-                <span class="student-name">👤 ${currentStudent}</span>
-            </div>
-            <div class="question-section">
-                <h3>${card.question}</h3>
-            </div>
-            <div class="options-section">
-                ${card.options.map((option, index) => `
-                    <button class="option-btn" data-index="${index}">
-                        <span class="option-letter">${String.fromCharCode(65 + index)}</span>
-                        <span class="option-text">${option}</span>
+
+    const question = currentTopic.questions[state.currentQuestion];
+
+    statusEl.textContent = `Q${state.currentQuestion + 1}/${currentTopic.questions.length}`;
+    statusEl.className = 'student-status status-active';
+
+    content.innerHTML = `
+        <div class="question-box">
+            <div class="question-number">Question ${state.currentQuestion + 1}</div>
+            <div class="question-text">${question.question}</div>
+            <div class="options">
+                ${question.options.map((opt, idx) => `
+                    <button class="option-btn" data-student="${studentName}" data-answer="${idx}">
+                        <span class="option-label">${String.fromCharCode(65 + idx)}</span>
+                        <span class="option-text">${opt}</span>
                     </button>
                 `).join('')}
             </div>
-            <div class="feedback-section" id="feedback" style="display:none;"></div>
         </div>
     `;
-    
-    document.getElementById('cards-container').innerHTML = html;
-    
-    document.querySelectorAll('.option-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            const selectedIndex = parseInt(e.currentTarget.dataset.index);
-            checkAnswer(selectedIndex, card);
-        });
+
+    // Add click handlers
+    content.querySelectorAll('.option-btn').forEach(btn => {
+        btn.addEventListener('click', handleAnswer);
     });
 }
 
-async function checkAnswer(selectedIndex, card) {
-    const isCorrect = selectedIndex === card.correct;
-    const feedbackDiv = document.getElementById('feedback');
-    
-    document.querySelectorAll('.option-btn').forEach(btn => {
-        btn.disabled = true;
-        const btnIndex = parseInt(btn.dataset.index);
-        if (btnIndex === card.correct) {
-            btn.classList.add('correct');
-        } else if (btnIndex === selectedIndex && !isCorrect) {
-            btn.classList.add('incorrect');
+function handleAnswer(e) {
+    const btn = e.currentTarget;
+    const studentName = btn.dataset.student;
+    const answerIdx = parseInt(btn.dataset.answer);
+    const state = studentStates[studentName];
+    const question = currentTopic.questions[state.currentQuestion];
+    const isCorrect = answerIdx === question.correct;
+
+    // Disable all buttons
+    const panel = document.querySelector(`.student-panel[data-student="${studentName}"]`);
+    const content = panel.querySelector('.student-content');
+    content.querySelectorAll('.option-btn').forEach(b => {
+        b.disabled = true;
+        const idx = parseInt(b.dataset.answer);
+        if (idx === question.correct) {
+            b.classList.add('correct');
+        } else if (idx === answerIdx && !isCorrect) {
+            b.classList.add('incorrect');
         }
     });
-    
-    feedbackDiv.style.display = 'block';
-    feedbackDiv.innerHTML = `
-        <div class="feedback ${isCorrect ? 'correct-feedback' : 'incorrect-feedback'}">
-            <div class="feedback-icon">${isCorrect ? '✅' : '❌'}</div>
-            <div class="feedback-text">
-                <strong>${isCorrect ? 'Correct!' : 'Incorrect'}</strong>
-                <p>${card.explanation}</p>
-            </div>
-        </div>
-        <button class="next-btn" onclick="nextCard()">
-            ${currentCardIndex < currentCards.length - 1 ? 'Carte suivante →' : 'Terminer ✓'}
-        </button>
-    `;
-    
-    try {
-        await fetch(`${API_BASE}/update_progress`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-                name: currentStudent, 
-                correct: isCorrect ? 1 : 0 
-            })
-        });
-    } catch (error) {
-        console.error('Error updating progress:', error);
-    }
-}
 
-function nextCard() {
-    currentCardIndex++;
-    showFlashcard();
-}
+    // Update state
+    state.answers.push(isCorrect ? 1 : 0);
+    if (isCorrect) state.score++;
 
-// Dashboard view
-async function loadDashboard() {
-    try {
-        const response = await fetch(`${API_BASE}/dashboard`);
-        if (!response.ok) throw new Error('Erreur dashboard');
-        
-        const data = await response.json();
-        
-        let html = '<div class="dashboard-grid">';
-        for (const name in data) {
-            const status = data[name];
-            const statusText = {
-                'green': 'À jour',
-                'yellow': 'En retard',
-                'red': 'Besoin d\'aide',
-                'gray': 'Pas commencé'
-            }[status];
-            
-            html += `
-                <div class="student-card ${status}">
-                    <div class="student-name-dash">👤 ${name}</div>
-                    <div class="status-indicator">
-                        <span class="dot ${status}"></span>
-                        <span class="status-text">${statusText}</span>
-                    </div>
+    // Show brief feedback then auto-advance
+    setTimeout(() => {
+        content.innerHTML = `
+            <div class="feedback-flash ${isCorrect ? 'feedback-correct' : 'feedback-incorrect'}">
+                <div class="feedback-icon">${isCorrect ? '✅' : '❌'}</div>
+                <div class="feedback-text">
+                    <strong>${isCorrect ? 'Correct!' : 'Incorrect'}</strong>
+                    <p>${question.explanation}</p>
                 </div>
-            `;
-        }
-        html += '</div>';
-        
-        document.getElementById('dashboard').innerHTML = html;
-    } catch (error) {
-        document.getElementById('dashboard').innerHTML = '<p>Erreur de chargement</p>';
-    }
+            </div>
+        `;
+
+        updateTeacherDashboard();
+
+        // Auto-advance after 2 seconds
+        setTimeout(() => {
+            state.currentQuestion++;
+            showQuestionForStudent(studentName);
+        }, 2000);
+    }, 500);
 }
 
-window.addEventListener('DOMContentLoaded', () => {
-    showView('teacher');
-});
+// Auto-refresh teacher dashboard every 1 second
+setInterval(() => {
+    if (sessionActive) {
+        updateTeacherDashboard();
+    }
+}, 1000);

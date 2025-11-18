@@ -1,70 +1,82 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>REKAL Relais - Autopilot pour classes mixtes</title>
+    <title>REKAL Relais - Live Micro-Learning</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Header with Navigation -->
-    <header>
-        <h1>🎓 REKAL Relais</h1>
-        <p class="subtitle">Autopilot pour classes mixtes</p>
-        <nav>
-            <button class="nav-btn" onclick="showView('teacher')">👨‍🏫 Professeur</button>
-            <button class="nav-btn" onclick="showView('student')">👨‍🎓 Élève</button>
-            <button class="nav-btn" onclick="showView('dashboard')">📊 Tableau de bord</button>
-        </nav>
-    </header>
-
-    <!-- Teacher View -->
-    <div id="teacher-view" class="view-container">
-        <h2>Générer des cartes de pratique</h2>
-        <p class="instruction">Collez le texte de votre leçon ci-dessous pour générer automatiquement des questions à 3 niveaux de difficulté.</p>
-        <textarea id="lesson-text" placeholder="Exemple: Les fractions sont des nombres qui représentent des parties d'un tout. Une fraction se compose d'un numérateur et d'un dénominateur..."></textarea>
-        <button id="generate-btn" class="primary-btn">✨ Générer la pratique</button>
-        <div id="loading" style="display:none;">
-            <p>⏳ Génération en cours...</p>
+    <!-- Split Screen Layout -->
+    <div class="split-container">
+        <!-- Top: Teacher Dashboard -->
+        <div class="teacher-section">
+            <div class="teacher-header">
+                <h1>Teacher Dashboard - Live Student Progress</h1>
+                <div class="topic-selector">
+                    <label>Current Topic:</label>
+                    <select id="topic-select">
+                        <option value="">-- Select Topic --</option>
+                    </select>
+                    <button id="start-session-btn" class="start-btn" disabled>Start Session</button>
+                </div>
+            </div>
+            <div class="progress-grid" id="teacher-grid">
+                <div class="no-session">Select a topic and start a session to see live student progress</div>
+            </div>
         </div>
-        <div id="cards-display"></div>
-    </div>
 
-    <!-- Student View -->
-    <div id="student-view" class="view-container" style="display:none;">
-        <h2>Pratique personnalisée</h2>
-        <p class="instruction">Choisissez votre nom pour commencer votre pratique adaptée à votre niveau.</p>
-        <select id="student-select">
-            <option value="">-- Choisissez votre nom --</option>
-            <option value="Alice">Alice</option>
-            <option value="Bob">Bob</option>
-            <option value="Charlie">Charlie</option>
-            <option value="Diana">Diana</option>
-            <option value="Eve">Eve</option>
-        </select>
-        <div id="student-info" style="display:none;">
-            <p>Niveau actuel: <span id="current-level" class="level-badge"></span></p>
+        <!-- Bottom: Student Grid (5 students) -->
+        <div class="students-section">
+            <div class="student-grid">
+                <div class="student-panel" data-student="Alice">
+                    <div class="student-header">
+                        <span class="student-name">Alice</span>
+                        <span class="student-status">Waiting...</span>
+                    </div>
+                    <div class="student-content">
+                        <div class="waiting-message">Waiting for session to start</div>
+                    </div>
+                </div>
+                <div class="student-panel" data-student="Bob">
+                    <div class="student-header">
+                        <span class="student-name">Bob</span>
+                        <span class="student-status">Waiting...</span>
+                    </div>
+                    <div class="student-content">
+                        <div class="waiting-message">Waiting for session to start</div>
+                    </div>
+                </div>
+                <div class="student-panel" data-student="Charlie">
+                    <div class="student-header">
+                        <span class="student-name">Charlie</span>
+                        <span class="student-status">Waiting...</span>
+                    </div>
+                    <div class="student-content">
+                        <div class="waiting-message">Waiting for session to start</div>
+                    </div>
+                </div>
+                <div class="student-panel" data-student="Diana">
+                    <div class="student-header">
+                        <span class="student-name">Diana</span>
+                        <span class="student-status">Waiting...</span>
+                    </div>
+                    <div class="student-content">
+                        <div class="waiting-message">Waiting for session to start</div>
+                    </div>
+                </div>
+                <div class="student-panel" data-student="Eve">
+                    <div class="student-header">
+                        <span class="student-name">Eve</span>
+                        <span class="student-status">Waiting...</span>
+                    </div>
+                    <div class="student-content">
+                        <div class="waiting-message">Waiting for session to start</div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div id="cards-container"></div>
     </div>
-
-    <!-- Dashboard View -->
-    <div id="dashboard-view" class="view-container" style="display:none;">
-        <h2>Tableau de bord de la classe</h2>
-        <p class="instruction">Vue d'ensemble de la progression de vos élèves.</p>
-        <div class="legend">
-            <span><span class="dot green"></span> À jour (>70%)</span>
-            <span><span class="dot yellow"></span> En retard (40-70%)</span>
-            <span><span class="dot red"></span> Besoin d'aide (<40%)</span>
-            <span><span class="dot gray"></span> Pas commencé</span>
-        </div>
-        <div id="dashboard"></div>
-        <button class="secondary-btn" onclick="loadDashboard()">🔄 Actualiser</button>
-    </div>
-
-    <footer>
-        <p>REKAL Relais - Hackathon 2024 | Autopilot pour classes mixtes 🚀</p>
-    </footer>
 
     <script src="script.js"></script>
 </body>
